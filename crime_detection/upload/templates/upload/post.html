@@ -54,8 +54,8 @@
                     "contentType":false, //multpart/form-data로 전송
                     "success": function(res) {
                         alert(JSON.stringify(res));
-                        html = `<b>결과:${res.result}</b><br>
-                        <img src='${res.img_url}'>`
+                        console.log(res.img_url)
+                        html = `<b>결과: <img src='${res.img_url}'>`
                         $('#result').html(html)
                     },
                     "error":function(e){
@@ -85,6 +85,8 @@
     
     <div id="result">
     </div>
+
+    <!-- <img src="D:\202105_lab\02.git\Mini_Project\crime_detection\crime_detection\media\cat.jpg"> -->
 
     <!-- <div>
         <div class="img_wrap">

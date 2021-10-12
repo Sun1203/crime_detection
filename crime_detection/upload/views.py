@@ -34,7 +34,6 @@ def result(request):
         print(r"/media/{}".format(img_field.name))
         # dictionary -> JSON 변환시 numpy 타입은 변환이 안된다. str(), float()으로 타입변환
         result = {
-            'result':str(image),
             'img_url': r"/media/{}".format(img_field.name)
         }
 
