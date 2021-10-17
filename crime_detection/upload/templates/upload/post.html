@@ -40,9 +40,9 @@
                 // append(name, value) 로 저장
                 reqData = new FormData()
                 reqData.append('upimg', upImg)
-                console.log(reqData)
-                for (var pair of reqData.entries()) {
-                     console.log(pair[0]+ ', ' + pair[1]); }
+                // console.log(reqData)
+                // for (var pair of reqData.entries()) {
+                //      console.log(pair[0]+ ', ' + pair[1]); }
 
                 
                 $.ajax({
@@ -53,17 +53,14 @@
                     "processData":false, //데이터를 문자열로 바꿀지 여부. true: 문자열
                     "contentType":false, //multpart/form-data로 전송
                     "success": function(res) {
-                        alert(JSON.stringify(res));
-                        console.log(res.img_url)
-                        html = `<b>결과: <img src='${res.img_url}'>`
+                        console.log(res.image_data)
+                        html = `<b>결과:   <img src="data:;base64,${res.image_data}">`;
                         $('#result').html(html)
                     },
                     "error":function(e){
                         alert(JSON.stringify(e));
                         alert(e)
-                    }
-                        
-
+                    }                 
                 });
             });
         })
