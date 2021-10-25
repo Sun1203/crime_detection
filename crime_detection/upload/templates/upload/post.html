@@ -54,7 +54,8 @@
                     "contentType":false, //multpart/form-data로 전송
                     "success": function(res) {
                         console.log(res.image_data)
-                        html = `<b>결과:   <img src="data:;base64,${res.image_data}">`;
+                        console.log(res.image_result_data)
+                        html = `<b>결과:   <img src="data:;base64,${res.image_result_data}">`;
                         $('#result').html(html)
                     },
                     "error":function(e){

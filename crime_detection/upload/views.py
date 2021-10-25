@@ -2,7 +2,14 @@ from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import render
 import os
 # from django.core.files.storage import FileSystemStorage
+
+from django.core.files.uploadedfile import InMemoryUploadedFile
+import io
+
 import json
+import numpy as np
+import cv2
+
 
 from django.utils.html import format_html
 from . import forms
@@ -10,89 +17,78 @@ from django.views.decorators.csrf import csrf_exempt
 
 from crime_project import settings
 
-from PIL import Image
+from PIL import Image, ImageFont, ImageDraw
 from django.utils.safestring import SafeData, SafeString, mark_safe
 import base64
 
-# def post_view(request):
-#     return render(request, 'upload/post.html')
 
 @csrf_exempt
 def result(request):
 
     form = forms.UploadForm(request.POST, request.FILES)
-    # print(form)
     if form.is_valid():
-        # clean_data = form.cleaned_data
-        # # print(clean_data.read)
-        # img_field = clean_data['upimg']
-        # # print(img_field.read())
-
-        # print(img_field, type(img_field))
-        # # print(img_field.image.width, img_field.image.height, img_field.image.format, img_field.name)
-
-        # image = Image.open(img_field)
-        # print(type(image))
-
-        # 파일저장
-        # save_path = os.path.join(settings.MEDIA_ROOT, img_field.name)
-        # print(save_path)
-        # image.save(save_path)
-        # print(r"/media/{}".format(img_field.name))
-        # # dictionary -> JSON 변환시 numpy 타입은 변환이 안된다. str(), float()으로 타입변환
-        # result = {
-        #     'img_url': r"/media/{}".format(img_field.name)
-        # }
-        # result_str = json.dumps(result)
-
+        
 
         
         in_file = request.FILES['upimg']
         bytes_file = in_file.read()
-        # print(type(bytes_file))
         encode_data = base64.b64encode(bytes_file).decode('utf-8')
-        print(type(encode_data))
+            
+        # 한글 입력
+        font = ImageFont.truetype("fonts/gulim.ttc", 20)
 
-   
-        result = {'image_data':encode_data}
+        # 받아온 이미지 데이터로 detection 
+        face_cascade = cv2.CascadeClassifier(r'D:\202105_lab\Haarcascades\haarcascades\haarcascade_frontalface_default.xml')
+        img = cv2.imdecode(np.fromstring(bytes_file, np.uint8), cv2.IMREAD_UNCHANGED)
+
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        faces = face_cascade.detectMultiScale(gray, 1.3,5)
+
+        # 폰트 설정
+        font = cv2.FONT_HERSHEY_SCRIPT_SIMPLEX
+
+        # 검증할 이미지 얼굴
+        cropped_faces = []
+
+        height = img.shape[0]
+        width = img.shape[1]
+        for (x,y,w,h) in faces:
+            top = y - int(h / 4)
+            if top < 0:
+                top = 0
+
+            bottom = y + h + int(h / 4)
+            if bottom >= height:
+                bottom = height-1
+
+            left = x - int(w / 4)
+            if left < 0:
+                left = 0
+
+            right = x + w + int(w / 4)
+            if right >= width:
+                right = width-1
+
+            cropped = img[top:bottom, left:right] 
+            cropped_img_resize = cv2.resize(cropped, dsize=(224, 224), interpolation=cv2.INTER_AREA)
+            cropped_faces.append(cropped_img_resize)
+
+            cv2.rectangle(img, (x,y), (x+w, y+h), (255,0,0),2)
+            img = cv2.putText(img, 'test', [x, y], font, 1, (0,0,0), 2, cv2.LINE_AA)
+
+
+
+        # ndarray -> bytes 변환
+        image_bytes = cv2.imencode('.jpg', img)[1].tobytes()
+        encode_result_data = base64.b64encode(image_bytes).decode('utf-8')
+
+
+        result = {'image_data':encode_data, 'image_result_data':encode_result_data}
         result = json.dumps(result)
         return HttpResponse(result)
 
 
-    # if request.method =='GET':
 
-    #     id = request.GET['id']
-    #     data = {
-    #         'data': id,
-    #     }
-    #     return render(request, 'upload/result.html', data)
-    
-    # elif request.method =='POST':
-    
-        # id = request.POST.get('id')
-        # name = request.POST.get('name')
-        # img = request.FILES.get('input_img')
-
-        # fs = FileSystemStorage(location='media/screening_ab1', base_url='media/screening_ab1')
-        # filename = fs.save(img.name, img)
-        # upload_file_url = fs.url(filename)
-        # img_size = img.size
-
-        # data = {
-        #     'id':id,
-        #     'name':name,
-        #     'img':img,
-        #     'upload_file_url':upload_file_url,
-        #     'img_size':img_size,
-        # }
-
-        # data = json.loads(request.body)
-        # print(data)
-        # context = {
-        #     'result':data,
-        # }
-        # return JsonResponse(context)
-        # return render(request, 'upload/result.html', data)
 
 
 
