@@ -25,24 +25,23 @@
                 //              .files : 선택한 파일 => 배열(FileList)로 반환 [File객체]
                 // 
                 fileList = $('#upimg')[0].files
-                // console.log(fileList)
+                console.log(fileList)
                 if (fileList.length == 0) {
                     alert("이미지 파일을 선택하세요.")
                     return
                 }
                 upImg = fileList[0]  //File 객체 반환. File.type : image/jpg - mime type 반환. image가 아니면 전송안되도록 처리.
+                console.log(upImg)
                 if (!upImg.type.startsWith('image')) {
                     alert("이미지 파일이 아닙니다.")
                     return 
                 }
 
-                // FormData() : 요청파라미터를 저장하는 객체
-                // append(name, value) 로 저장
+
                 reqData = new FormData()
                 reqData.append('upimg', upImg)
-                // console.log(reqData)
-                // for (var pair of reqData.entries()) {
-                //      console.log(pair[0]+ ', ' + pair[1]); }
+                console.log(reqData)
+
 
                 
                 $.ajax({
@@ -53,9 +52,9 @@
                     "processData":false, //데이터를 문자열로 바꿀지 여부. true: 문자열
                     "contentType":false, //multpart/form-data로 전송
                     "success": function(res) {
-                        console.log(res.image_data)
                         console.log(res.image_result_data)
-                        html = `<b>결과:   <img src="data:;base64,${res.image_result_data}">`;
+                        html = `<b>결과:   <img src="data:;base64,${res.image_result_data}" style="width:500px; height:500px;">
+                            <img src="data:;base64,${res.post}" style="width:500px; height:500px;">`;
                         $('#result').html(html)
                     },
                     "error":function(e){
@@ -73,10 +72,7 @@
 
 </head>
 <body>
-    <!-- <form action="/upload/post/" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
 
-    </form> -->
     <h2><b>이미지 업로드</b></h2>
     <input type="file" name="upimg" id="upimg" /> <br><br>
     <button type="button" id="reqBtn" name="reqBtn" >데이터보내기 & 가져오기</button> <br>
@@ -84,13 +80,7 @@
     <div id="result">
     </div>
 
-    <!-- <img src="D:\202105_lab\02.git\Mini_Project\crime_detection\crime_detection\media\cat.jpg"> -->
 
-    <!-- <div>
-        <div class="img_wrap">
-            <img id="img" />
-        </div>
-    </div> -->
 
 
 
