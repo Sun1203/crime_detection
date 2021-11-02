@@ -21,4 +21,4 @@ class UploadConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'upload'
 
-    model = models.load_model(r'.\weights\crime_vgg_h5_model.h5')
+    model = models.load_model(r'.\weights\crime_vgg_h5_model2.h5')
