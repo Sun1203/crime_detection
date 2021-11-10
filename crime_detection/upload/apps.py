@@ -21,4 +21,5 @@ class UploadConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'upload'
 
-    model = models.load_model(r'.\weights\crime_vgg_h5_model2.h5')
+    # 처음 서버 시작할때 model load
+    model = models.load_model(r'.\weights\1107before_aug_tight_trainableAllFalse')
