@@ -77,38 +77,19 @@
                     "processData":false, 
                     "contentType":false,
                     "success": function(res) {
-                        // img.src = "data:;base64 ," + res.post
-                        // img.width = "500px"
-                        // img.style = "width: 500px; height: 500px;"
-                        // img.remove();
-
-                        // console.log(res.image_result_data)
-                        // console.log(Object.values(res))
-                        console.log(Object.values(res.length))
-                        // for (i in res) {
-                        //     console.log(Object.values(i))
-                        // }
-
-                        for (i in res) {
-                            if (res[i] === "해당하는 인물을 찾지 못했습니다.") {
-                                html = `<b>결과:  ${res.context}`;
-                                $('#result').html(html)
-                                console.log('기모찌')
-                                break
-                            }else {
-                                html = `<b>결과: <img src="data:;base64,${res.image_result_data}" width=500>`;
-                                $('#result').html(html)
-                                console.log('기모찌찌')
-                                
-                            }
+                        console.log(res['context'])
+                        console.log(res['context'] == undefined)
+                        if (res['context'] == undefined) {
+                            html = `<b>결과:<img src="data:;base64,${res.image_result_data}" width=500>`;
+                            $('#result').html(html)
+                            html3 = `${res.result_name_lst}`;
+                            $('#result3').html(html3)
                         }
-
-
-                        // html = `<b>결과:  ${res.context} <img src="data:;base64,${res.image_result_data}" width=500>`;
-                        // $('#result').html(html)
-                        html3 = `${res.result_name_lst}`;
-                        $('#result3').html(html3)
-
+                        if (res['context'] == '해당하는 인물을 찾지 못했습니다.') {
+                            html = `<b>결과: ${res.context}`;
+                            $('#result').html(html)
+                        }
+                        
 
                         html2 = `<img src="data:;base64,${res.post}">`;
                         $('#result2').html(html2)
@@ -127,7 +108,7 @@
 
 
 </head>
-<body>
+<body style="background-color: rgb(219, 186, 186);">
 
     <h2><b>이미지 업로드</b></h2>
     <input type="file" name="upimg" id="upimg" /> <br><br>
@@ -139,8 +120,7 @@
     <div id="result" style="float: left;">
     </div>
     <div id='result2' style="float: right;">
-        <img src="/media/post.png" id="postImg", name='postImg'>
-
+        <img src="/media/poster_3.png" id="postImg", name='postImg'>
     </div>
 
 
