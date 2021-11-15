@@ -27,7 +27,7 @@
   ![test](https://user-images.githubusercontent.com/84012715/141742285-3299b1e8-c065-4fed-a23d-7d0b42b4016a.gif)
 
 ## Video Detecting
-  - 모델을 활용하여 영상안에서 특정 사람을 찾는 것도 가능.
+  - 모델을 활용하여 영상안에서 특정 사람을 찾을 수 있다.
 
 
   ![videotest](https://user-images.githubusercontent.com/84012715/141743760-dd3bd8b5-a0e4-4109-9880-bdd59a2af663.gif)
