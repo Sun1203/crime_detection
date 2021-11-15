@@ -7,8 +7,11 @@
   - [이재선](https://github.com/Sun1203)
  
 ## Project Structure
-- ![프로젝트 전체 과정](https://user-images.githubusercontent.com/84012715/141407901-97b46a10-43fa-485d-864d-ba7f428e49e1.PNG)
+![프로젝트 전체 과정](https://user-images.githubusercontent.com/84012715/141407901-97b46a10-43fa-485d-864d-ba7f428e49e1.PNG)
   
 ## Process
 1. 데이터 수집 및 데이터 전처리
-  - 
+![dataprocess](https://user-images.githubusercontent.com/84012715/141739892-b423b6d6-d6d4-4c85-8224-14af68fce4e3.PNG)
+ 
+
+2. 
